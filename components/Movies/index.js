@@ -15,6 +15,7 @@ export default function Movies({ initialMovies = [] }) {
   const [movies, setMovies] = useState(initialMovies);
 
   function handleAddMovie(newMovie) {
+    //check if movie already exists => mach ich nicht
     setMovies([...movies, { id: uid(), ...newMovie }]);
   }
   function handleDeleteMovie(id) {

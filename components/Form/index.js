@@ -64,10 +64,10 @@ export default function Form({ onAddMovie }) {
     const form = event.target;
     const name = form.elements.name.value;
     const isLiked = form.elements.isLiked.checked;
-
+    //schützen vor user input
     onAddMovie({
-      name,
-      isLiked,
+      name: name,
+      isLiked: isLiked,
     });
     form.reset();
     form.elements.name.focus();
