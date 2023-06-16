@@ -37,3 +37,47 @@ test("renders the initial movies", () => {
   });
   expect(lordHeading).toBeInTheDocument();
 });
+
+test("renders a new movie when the form is submitted with a new movie name", async () => {
+  const user = userEvent.setup();
+  render(<Movies initialMovies={initialMovies} />);
+  const input = screen.getByLabelText("Name");
+  await user.type(input, "The Matrix");
+  const button = screen.getByRole("button", { name: "Add" });
+  await user.click(button);
+  const matrixHeading = screen.getByRole("heading", { name: "The Matrix" });
+  expect(matrixHeading).toBeInTheDocument();
+});
+
+test("deletes a movie when the delete button is clicked", async () => {
+  const user = userEvent.setup();
+  render(<Movies initialMovies={initialMovies} />);
+  const deleteButton = screen.getByRole("button", {
+    name: "delete The Incredible Hulk",
+  });
+  await user.click(deleteButton);
+  const hulkHeadline = screen.queryByRole("heading", {
+    name: "The Incredible Hulk",
+  });
+  expect(hulkHeadline).not.toBeInTheDocument();
+});
+
+test("likes a movie when the like button is clicked", async () => {
+  const user = userEvent.setup();
+  render(<Movies initialMovies={initialMovies} />);
+  const likeButton = screen.getByRole("button", {
+    name: "like The Incredible Hulk",
+  });
+  await user.click(likeButton);
+  expect(likeButton).toHaveAccessibleName("unlike The Incredible Hulk");
+});
+
+test("unlikes a movie when the unlike button is clicked", async () => {
+  const user = userEvent.setup();
+  render(<Movies initialMovies={initialMovies} />);
+  const likeButton = screen.getByRole("button", {
+    name: "unlike Lord of the Rings",
+  });
+  await user.click(likeButton);
+  expect(likeButton).toHaveAccessibleName("like Lord of the Rings");
+});
